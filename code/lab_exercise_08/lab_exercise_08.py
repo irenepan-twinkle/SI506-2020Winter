@@ -120,7 +120,7 @@ class Dog:
 
 # set "3" to a variable named <age>. Do not set it as a string.
 
-# Instantiate a Dog object with <name> and <age> and assign it to a variable named <my_dog>.
+# Instantiate a Dog object with <name> and <age> and assign it to a variable named <dog>.
 
 # Call <incerement_age>.
 
