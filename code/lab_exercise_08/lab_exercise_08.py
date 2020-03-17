@@ -18,6 +18,7 @@ print('Lab Exercise 08')
 
 class Dog:
     '''
+    This Dog class helps instantiate the Dog objects later in the lab exercise.
     This is your first exposure to Object Oriented Programming (OOP). This contains
     the init function and helper models. 
     '''
