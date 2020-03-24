@@ -94,10 +94,10 @@ class Library():
         Determines if the library will add a book instance to its collection
         depending on its conditions.
 
-        if book instance is of Book class, return True.
-        if book instance is of PaperbackBook class and the number of torn pages 
-          is less than or equal to the library's torn page tolerance, return True.
-        else return False.
+        if book instance is of PaperbackBook class:
+            if the the num of torn pages is <= the library's torn page tolerance, return True.
+            elif the num of torn pages is > the library's torn page tolerance, return False.
+        else return True (else catches all plain book instances)
             HINT: there is a built-in isinstance() function to check what class an isntance
             came from
 
