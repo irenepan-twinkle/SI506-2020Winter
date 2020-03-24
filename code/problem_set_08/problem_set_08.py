@@ -134,7 +134,7 @@ class StrengthHero(Hero):
         The constructor of the <StrengthHero> class.
         Use super() to initialize the attributes of the parent class.
         Add a new attribute <main_attribute>.
-        The <main_attribute> of agility hero should be "agility"
+        The <main_attribute> of strength hero should be "strength"
 
         Parameters:
             name (str): The name of the hero.
@@ -327,7 +327,7 @@ def main(heroes):
     # for v in all_heroes.values():
         # print(v)
     # Your output of print should be the same as below
-    # Axe, level 25, hp 2425.0, mp 434.0, damage 107.00000000000007
+    # Axe, level 25, hp 2425.0, mp 434.0, damage 141.9999999999999
     # Monkey King, level 25, hp 1211.0, mp 710.0, damage 143.5
     # Invoker, level 25, hp 792.0, mp 2495.0, damage 156.9999999999999
     
