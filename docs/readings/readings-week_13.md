@@ -1,10 +1,12 @@
 # Readings: Week 13
 
-This week you will learn how to connect over HTTP to a web application programming interface (API)
-in order to retrieve resources (i.e., data) serialized as Javascript Object Notation (JSON), a
-standard data interchange format. You will use `pip`, a Python package manager, to install the
-`requests` module in order to simplify communicating with the [Star Wars API](https://swapi.co/)
-endpoint. You will also learn how to use the `json` module to both read and write JSON documents.
+This week you will learn how to connect over HTTP to a web application
+programming interface (API) in order to retrieve resources (i.e., data)
+serialized as Javascript Object Notation (JSON), a  standard data interchange
+format. You will use `pip`, a Python package manager, to install the `requests`
+module in order to simplify communicating with the
+[Star Wars API](https://swapi.co/) endpoint. You will also learn how to use the
+`json` module to both read and write JSON documents.
 
 ## APIs
 
