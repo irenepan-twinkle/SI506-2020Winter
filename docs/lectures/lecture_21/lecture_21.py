@@ -1,3 +1,4 @@
+import copy
 import json
 import requests
 
@@ -7,12 +8,13 @@ class Entity:
     """Base representation of a resource. Instantiate with name
     and resource identifier.
 
-        Attributes:
-            name: resource name
-            url: resource identifier
+    Attributes:
+        name: resource name
+        url: resource identifier
 
-        Methods:
-            assign_values: convenience method for loading in dict data
+    Methods:
+        assign_values: convenience method for loading in dict data
+        jsonable: return JSON-friendly dict representation of the object
     """
 
     def __init__(self, name, url):
@@ -25,16 +27,33 @@ class Entity:
         attributes (__dict__.keys()) and assign data values on matching
         keys using built-in setattr() function.
 
-            Parameters:
-                data (dict): key/value pairs to assign
+        Parameters:
+            data (dict): key/value pairs to assign
 
-            Returns:
-                None
+        Returns:
+            None
         """
 
-        for key in self.__dict__.keys():
-            if key in data.keys():
-                setattr(self, key, data[key]) # handy built-in function
+        pass
+
+
+    def jsonable(self):
+        """Return a JSON-friendly representation of the object.
+        Use a dictionary literal rather than built-in dict() to avoid
+        built-in lookup costs.
+
+        Do not simply return self.__dict__. It can be intercepted and
+        mutated, adding, modifying or removing instance attributes as a
+        result.
+
+        Parameters:
+            None
+
+        Returns:
+            dict: dictionary of the object's instance variables
+        """
+
+        return {'name': self.name, 'url': self.url}
 
 
     def __str__(self):
@@ -53,6 +72,7 @@ class Person(Entity):
 
     Methods:
         get_homeworld: retrieve home planet
+        jsonable: return JSON-friendly dict representation of the object
     """
 
     def __init__(self, name, url):
@@ -73,11 +93,35 @@ class Person(Entity):
             None
         """
 
-        if not isinstance(self.homeworld, Planet):
-            data = get_swapi_resource(url)
-            homeworld = Planet(data['name'], data['url'])
-            homeworld.assign_values(data)
-            self.homeworld = homeworld
+        pass
+
+
+    def jsonable(self):
+        """Return a JSON-friendly representation of the object.
+        Use a dictionary literal rather than built-in dict() to avoid
+        built-in lookup costs.
+
+        Do not simply return self.__dict__. It can be intercepted and
+        mutated, adding, modifying or removing instance attributes as a
+        result.
+
+        Parameters:
+            None
+
+        Returns:
+            dict: dictionary of the object's instance variables
+        """
+
+        # return self.__dict__ # DANGEROUS
+        # return copy.deepcopy(self.__dict__) # safe but slow
+
+        return {
+                'url': self.url,
+                'name': self.name,
+                'gender': self.gender,
+                'birth_year': self.birth_year,
+                'homeworld': self.homeworld
+            }
 
 
     def __str__(self):
@@ -92,6 +136,9 @@ class Planet(Entity):
         climate: climate description
         terrain: terrain description
         population: population size
+
+    Methods:
+        jsonable: return JSON-friendly dict representation of the object
     """
 
     def __init__(self, name, url):
@@ -102,6 +149,35 @@ class Planet(Entity):
         self.population = None
 
 
+    def jsonable(self):
+        """Return a JSON-friendly representation of the object.
+        Use a dictionary literal rather than built-in dict() to avoid
+        built-in lookup costs.
+
+        Do not simply return self.__dict__. It can be intercepted and
+        mutated, adding, modifying or removing instance attributes as a
+        result.
+
+        Parameters:
+            None
+
+        Returns:
+            dict: dictionary of the object's instance variables
+        """
+
+        # return self.__dict__ # DANGEROUS
+        # return copy.deepcopy(self.__dict__) # safe but slow
+
+        return {
+                'url': self.url,
+                'name': self.name,
+                'gravity': self.gravity,
+                'climate': self.climate,
+                'terrain': self.terrain,
+                'population': self.population
+            }
+
+
     def __str__(self):
         return self.name
 
@@ -109,23 +185,26 @@ class Planet(Entity):
 class Starship(Entity):
     """A crewed vehicle used for traveling in realspace or hyperspace.
 
-        Attributes:
-            name: starship name or nickname
-            url: resource identifier
-            model: manufacturer's model name
-            manufacturer: starship builder
-            dimensions: starship length, width, height
-            max_atmosphering_speed: TODO
-            hyperdrive_rating: TODO
-            MGLT: megalight per hour traveled
-            crew: crew size
-            crew_members: crew (role, name) assigned to starship
-            passengers: number of passengers starship rated to carry
-            cargo_capacity: cargo metric tonnage starship rated to carry
-            consumables: max period in months before on-board provisions
-                         must be replenished
-            armament: offensive and defensive weaponry
+    Attributes:
+        name: starship name or nickname
+        url: resource identifier
+        model: manufacturer's model name
+        manufacturer: starship builder
+        dimensions: starship length, width, height
+        max_atmosphering_speed: max sub-orbital speed
+        hyperdrive_rating: lightspeed propulsion system rating
+        MGLT: megalight per hour traveled
+        crew: crew size
+        crew_members: crew (role, name) assigned to starship
+        passengers: number of passengers starship rated to carry
+        cargo_capacity: cargo metric tonnage starship rated to carry
+        consumables: max period in months before on-board provisions
+            must be replenished
+        armament: offensive and defensive weaponry
 
+    Methods:
+        assign_crew: assign crew members to starship
+        jsonable: return JSON-friendly dict representation of the object
     """
 
     def __init__(self, name, url):
@@ -136,7 +215,7 @@ class Starship(Entity):
         self.dimensions = None
         self.max_atmosphering_speed = None
         self.hyperdrive_rating = None
-        self.MGLT = None # megalight per hour
+        self.MGLT = None
         self.crew = None
         self.crew_members = {}
         self.passengers = None
@@ -159,56 +238,74 @@ class Starship(Entity):
         pass
 
 
+    def jsonable(self):
+        """Return a JSON-friendly representation of the object.
+        Use a dictionary literal rather than built-in dict() to avoid
+        built-in lookup costs.
+
+        Do not simply return self.__dict__. It can be intercepted and
+        mutated, adding, modifying or removing instance attributes as a
+        result.
+
+        Parameters:
+            None
+
+        Returns:
+            dict: dictionary of the object's instance variables
+        """
+
+        # return self.__dict__ # DANGEROUS
+        # return copy.deepcopy(self.__dict__) # safe but slow
+
+        return {
+            'url': self.url,
+            'name': self.name,
+            'starship_class': self.starship_class,
+            'model': self.model,
+            'manufacturer': self.manufacturer,
+            'dimensions': self.dimensions,
+            'max_atmosphering_speed': self.max_atmosphering_speed,
+            'hyperdrive_rating': self.hyperdrive_rating,
+            'MGLT': self.MGLT,
+            'crew': self.crew,
+            'crew_members': self.crew_members,
+            'passengers': self.passengers,
+            'cargo_capacity': self.cargo_capacity,
+            'consumables': self.consumables,
+            'armament': self.armament
+        }
+
+
     def __str__(self):
         return f"{self.starship_class} {self.model} {self.name}"
 
 
-class ExtendedEncoder(json.JSONEncoder):
-    """Extends json module's JSONEncoder class in order to serialize
+class CustomEncoder(json.JSONEncoder):
+    """Extends the json module's JSONEncoder class in order to serialize
      composite class instances.
+
+     Note: include the pylint disable comment as Windows users have
+     reported issues when the default() method is called.
 
      Methods:
         default: overrides default method
      """
 
-    def default(self, obj):
-        if isinstance(obj, Person):
-            return {
-                'url': obj.url,
-                'name': obj.name,
-                'gender': obj.gender,
-                'birth_year': obj.birth_year,
-                'homeworld': obj.homeworld
-            }
-        if isinstance(obj, Planet):
-            return {
-                'url': obj.url,
-                'name': obj.name,
-                'gravity': obj.gravity,
-                'climate': obj.climate,
-                'terrain': obj.terrain,
-                'population': obj.population
-            }
-        if isinstance(obj, Starship):
-            return {
-                'url': obj.url,
-                'name': obj.name,
-                'starship_class': obj.starship_class,
-                'model': obj.model,
-                'manufacturer': obj.manufacturer,
-                'dimensions': obj.dimensions,
-                'max_atmosphering_speed': obj.max_atmosphering_speed,
-                'hyperdrive_rating': obj.hyperdrive_rating,
-                'MGLT': obj.MGLT,
-                'crew': obj.crew,
-                'crew_members': obj.crew_members,
-                'passengers': obj.passengers,
-                'cargo_capacity': obj.cargo_capacity,
-                'consumables': obj.consumables,
-                'armament': obj.armament
-            }
+    def default(self, obj): # pylint: disable=E0202
+        """Check object is provisioned with a jsonable method that is
+        callable. If yes override default serialization handling.
 
-        return json.JSONEncoder.default(self, obj)
+        Parameters:
+            obj (object): class instance
+
+        Returns:
+            dict: dictionary representation of the object
+        """
+
+        if hasattr(obj, 'jsonable') and callable(obj.jsonable):
+            return obj.jsonable()
+        else:
+            return json.JSONEncoder.default(self, obj)
 
 
 def get_swapi_resource(url, params=None, timeout=20):
@@ -243,7 +340,8 @@ def read_json(filepath):
 
 
 def write_json(filepath, data):
-    """Description removed. For you to write.
+    """Serializes basic objects (e.g., dictionaries and lists)
+    as JSON using default encoder. Writes content to the provided filepath.
 
     Parameters:
         filepath (str): the path to the file.
@@ -257,9 +355,10 @@ def write_json(filepath, data):
         json.dump(data, file_obj, ensure_ascii=False, indent=2)
 
 
-def write_complex_json(filepath, obj):
-    """Serializes complex object structures (e.g., composite class
-    instances). Adds an ExtendedEncoder to the json.dump() call.
+def write_custom_json(filepath, obj):
+    """Serializes complex objects (e.g., composite class instances) as JSON
+    by adding a CustomEncoder to the json.dump() call. Writes content to the
+    provided filepath.
 
     Parameters:
         filepath (str): the path to the file.
@@ -270,7 +369,7 @@ def write_complex_json(filepath, obj):
     """
 
     with open(filepath, 'w', encoding='utf-8') as file_obj:
-        json.dump(obj, file_obj, cls=ExtendedEncoder, ensure_ascii=False, indent=2)
+        json.dump(obj, file_obj, cls=CustomEncoder, ensure_ascii=False, indent=2)
 
 
 def main():
@@ -297,8 +396,7 @@ def main():
     # 1.3 Combine starship data dicts
     # Note: local vals replace swapi vals on matching keys
 
-    # UNCOMMENT
-    # swapi_m_falcon. ???? # in-place (no assignment)
+    # swapi_m_falcon. ????? # FIX ME in-place (no assignment)
 
     # print(f"\nCombined = {swapi_m_falcon}\n")
 
@@ -312,7 +410,7 @@ def main():
     # assign_values() acts as a filter
     # Downside: overwrites init values
 
-    #UNCOMMENT
+    # UNCOMMENT
     # m_falcon.assign_values(swapi_m_falcon)
 
     # print(f"\nm_falcon.armament = {m_falcon.armament}\n")
@@ -327,9 +425,9 @@ def main():
     # print(f"\nswapi_solo = {swapi_solo}\n")
 
     # Add instance variable values the conventional way)
-    solo = None # instantiate Person
+    solo = None
 
-    # UNCOMMENT
+    # UNCOMMENT AND FIX
     # solo.gender = None
     # solo.birth_year = None
     # solo.get_homeworld(None) # fetch homeworld dict
@@ -339,32 +437,28 @@ def main():
     params = {'search': 'chewbacca'}
     swapi_chewie = None
 
-    print(f"\nswapi_chewie = {swapi_chewie}\n")
+    # print(f"\nswapi_chewie = {swapi_chewie}\n")
 
-    chewie = None # instantiate Person
+    chewie = None
 
-    # UNCOMMENT
-    #chewie.assign_values(swapi_chewie) # bulk assign
-    # chewie.get_homeworld(swapi_chewie['homeworld']) # fetch homeworld dicts
+    # UNCOMMENT AND FIX
+    # chewie.assign_values(None) # bulk assign
+    # chewie.get_homeworld(None) # fetch homeworld dicts
 
     # 3.3 Assign crew
-    crew = {} # key = role (pilot), value = name
-
-    # UNCOMMENT
-    # m_falcon.assign_crew(crew)
+    crew = {}
+    m_falcon.assign_crew(crew)
 
 
     # 4.0 WRITE TO FILE
     filepath = 'si506_m_falcon.json'
 
-    # UNCOMMENT (fail)
+    # UNCOMMENT
     # write_json(filepath, m_falcon) # raises TypeError exception
 
     # Serialize composite class instances (a complex object)
-    # Implement ExtendEncoder(); reference in json.dump()
-
-    # UNCOMMENT (success)
-    write_complex_json(filepath, m_falcon)
+    # Implement CustomEncoder(); reference in json.dump()
+    # write_custom_json(filepath, m_falcon)
 
 
 if __name__ == '__main__':
