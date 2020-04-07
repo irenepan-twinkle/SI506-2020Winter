@@ -319,7 +319,7 @@ def main():
     print(f"\nYoda for loop = {yoda_01}\n")
 
     # 3.3.2 dictionary comprehension
-    yoda_02 = {key: swapi_yoda[key] for key in swapi_yoda.keys() if key in filter_keys}
+    yoda_02 = {key: swapi_yoda[key] for key in filter_keys if key in swapi_yoda.keys()}
 
     print(f"\nYoda dict comp = {yoda_02}\n")
 
@@ -337,7 +337,7 @@ def main():
         else:
             yoda_03[key] = val
 
-    print(f"\nYoda int vals for loop = {yoda_01}\n")
+    print(f"\nYoda for loop int vals = {yoda_03}\n")
 
     # 3.4.2 dictionary comprehension
     # format: {
@@ -354,7 +354,7 @@ def main():
         for key, val in yoda_01.items()
         }
 
-    print(f"\nYoda int vals dict comp = {yoda_04}\n")
+    print(f"\nYoda dict comp int vals = {yoda_04}\n")
 
 if __name__ == '__main__':
     main()
