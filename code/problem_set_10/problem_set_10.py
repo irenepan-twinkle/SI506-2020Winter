@@ -16,6 +16,7 @@ class Entity():
     def __init__(self):
         pass
 
+
 # TO DO: Implement the __init__, jsonable methods to Film
 # Film is the child class of Entity
 class Film():
@@ -50,7 +51,7 @@ class Film():
 
 # TO DO: Implement the __init__, jsonable methods to Person
 # Planet is the child class of Entity
-class Planet():
+class Planet(Entity):
     PROPERTIES = ("name", "climate", "terrain", "url")
     def __init__(self, property_dict):
         # Similar to Film.__init__()
@@ -73,12 +74,11 @@ class Planet():
         """
         pass
 
-
 # TO DO: Implement the __init__, update_homeworld, update_films, jsonable methods to Person
 # Please understand <convert_resource_to_obj> first. You need to utilize it 
 # in update_homeworld, update_films, jsonable methods
 # Person is the child class of Entity
-class Person():
+class Person(Entity):
     PROPERTIES = ("name", "height", "mass", "homeworld", "films", "url")
     def __init__(self, property_dict):
         # Similar to Film.__init__()
@@ -89,7 +89,8 @@ class Person():
         self.homeworld is a url so far
         Replace it with corresponding Planet object
         
-        HINT: You should call the function <convert_resource_to_obj> to generate the object
+        HINT: You should call the functions <get_swapi_resource>,<convert_resource_to_obj> 
+        to generate the object
 
         Parameters:
             None
@@ -104,7 +105,8 @@ class Person():
         Replace it with a list of corresponding Film objects
         You should use list comprehension to generate the list of objects
         
-        HINT: You should call the function <convert_resource_to_obj> to generate the object
+        HINT: You should call the functions <get_swapi_resource>,<convert_resource_to_obj> 
+        to generate the object
 
         Parameters:
             None
@@ -149,7 +151,7 @@ def get_swapi_resource():
     Parameters:
         resource (str): a url that specifies the resource.
         params (dict): optional dictionary of querystring arguments. The default value is None.
-        timeout (int): timeout value in seconds. The default value is 20.
+        timeout (int): timeout value in seconds. The default value is 20
 
     Returns:
         dict: dictionary representation of the decoded JSON.
@@ -161,17 +163,17 @@ def get_swapi_resource():
 # You may notice that in the JSON returned by SWAPI, some information are represented by other urls
 # For example, in Luke.json, the value of "films" is a list of urls, where each url represents a film
 # that Luke Skywalker was in.
-# <convert_resource_to_obj> would convert those urls to meaningful objects.
-def convert_resource_to_obj():
+# <convert_resource_to_obj> would convert JSONs represented by those urls to meaningful objects.
+def convert_resource_to_obj(resource_dict, obj_class):
     """
-    This function calls <get_swapi_resource> to get the resource dict.
+    <resource_dict> should be a dictionary returned by <get_swapi_resource> or <read_json>.
     Use dictionary comprehension to generate property dict
         Loop over the key-value pair in resource dict
             If the key is in obj_class.PROPERTIES, add the key-value pair into the property dict
     Use property dict to initiate an instance of the <obj_class>
 
     Parameters:
-        resource (str): a url that specifies the resource.
+        resource_dict (dict): a dictionary returned by <get_swapi_resource> or <read_json>.
         obj_class (cls): a class that initiates the instance
 
     Returns:
@@ -184,13 +186,20 @@ def write_json(filepath, data):
     with open(filepath, 'w', encoding='utf-8') as file_obj:
         json.dump(data, file_obj, ensure_ascii=False, indent=2)
 
+# We have provided read_json for you
+def read_json(filepath):
+    with open(filepath, 'r', encoding='utf-8') as file_obj:
+        data = json.load(file_obj)
+
+    return data
+
 
 
 def main():
     # Pass three tests below first before you start working on <main>
 
     # BEGIN TEST FOR <get_swapi_resource> (Uncomment me when you're ready!)
-    # get_swapi_resource('https://swapi.co/api/ppp') # should print 404 something wrong happened
+    # get_swapi_resource('http://google.com/max') # should print 404 something wrong happened
     # END TEST FOR <get_swapi_resource>
 
     # BEGIN TEST FOR <Entity> (Uncomment me when you're ready!)
@@ -207,8 +216,8 @@ def main():
 
     # Now you can work on main :)
     # We have provided other tests for you
+    # Call the function <read_json> to read <Luke.json> get the resource dict
     # Call the function <convert_resource_to_obj> to create a Person instance <luke>
-    # <resource> should be "https://swapi.co/api/people/1/"
 
 
     # BEGIN TEST FOR <convert_resource_to_obj> (Uncomment me when you're ready!)
@@ -224,7 +233,6 @@ def main():
     # print(isinstance(luke.homeworld, Planet)) # should print True
     # END TEST FOR <update_homeworld>
 
-
     # So far luke.films is still a list of urls. Let's replace it with a list of Film objects
 
 
@@ -238,7 +246,6 @@ def main():
     # END TEST FOR <jsonable>
 
     # Now write luke.jsonable() into the file <luke_updated.json>
-
     pass
 
 
