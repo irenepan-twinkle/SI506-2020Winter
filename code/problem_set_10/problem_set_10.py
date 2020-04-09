@@ -178,7 +178,7 @@ def convert_resource_to_obj():
     Use property dict to initiate an instance of the <obj_class>
 
     Parameters:
-        resource (str): a url that specifies the resource.
+        resource_dict (dict): a dictionary returned by <get_swapi_resource> or <read_json>
         obj_class (cls): a class that initiates the instance
 
     Returns:
@@ -241,7 +241,7 @@ def main():
 
 
     # BEGIN TEST FOR <update_films> (Uncomment me when you're ready!)
-    print(isinstance(luke.films[0], Film)) # should print True
+    # print(isinstance(luke.films[0], Film)) # should print True
     # END TEST FOR <update_films>
 
     # BEGIN TEST FOR <jsonable> (Uncomment me when you're ready!)
