@@ -2,6 +2,8 @@ import requests, json
 
 # PROBLEM SET 09
 
+ENDPOINT = 'https://swapi.py4e.com/api'
+
 # INCOMING SECURE TRANSMISSION - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 """
 In this problem set, you have been levereged by the First Order to help them identify
