@@ -11,7 +11,7 @@ import requests, json
 # the set-up code.
 
 # SETUP CODE
-ENDPOINT = "https://swapi.co/api/planets/"
+ENDPOINT = 'https://swapi.py4e.com/api'
 PLANETS = ["Tatooine", "Yavin", "Coruscant", "Hoth"]
 
 class JsonSerializable(object):
@@ -19,7 +19,7 @@ class JsonSerializable(object):
     This class helps make the <Planet> class serializable
     so that we can store its instances into a json file
     '''
-    def toDict(self):
+    def to_dict(self):
         '''
         This function writes the instance variables of
         teh object to a dictionary
@@ -38,7 +38,7 @@ class JsonSerializable(object):
         Returns:
             printable representation of the object
         '''
-        return self.toDict()
+        return self.to_dict()
 # END SETUP
 
 # PROBLEM 1 (2.5 points)
@@ -180,8 +180,8 @@ def main():
     '''
     # Using dictionary comprehension, store the name of  from <PLANETS> as Keys
     # and call the <get_planets> function to get instances for each planet and
-    # store it as values. Store the dictionary as <planets_data>. Call <toDict>
-    # on your planet instance to make it serializable (Example: get_planet<'name'>.toDict())
+    # store it as values. Store the dictionary as <planets_data>. Call <to_dict>
+    # on your planet instance to make it serializable (Example: get_planet<'name'>.to_dict())
    
     
     # Write the planets_data as "swapi_planets.json" by calling
