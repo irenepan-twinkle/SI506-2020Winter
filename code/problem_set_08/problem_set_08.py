@@ -62,14 +62,13 @@ class Hero():
         intelligence_growth (float): The intelligence gain per level of the hero.
     """
 
-    def __init__(self):
+    def __init__(self,name,hp,mp,damage,strength_growth,agility_growth,intelligence_growth):
         """
         TO DO:
         The constructor of the <Hero> class. Here you will need to create
         the attributes ("instance variables") that were described in the <Hero>
         docstring. Note that some of the attributes are defined by parameters passed
         to this constructor method, but others are not. In this case, the <level> should be 0.
-
         Parameters:
             name (str): The name of the hero.
             hp (float): The health points of the hero.
@@ -78,10 +77,18 @@ class Hero():
             strength_growth (float): The strength gain per level of the hero.
             agility_growth (float): The agility gain per level of the hero.
             intelligence_growth (float): The intelligence gain per level of the hero.
-
         Returns:
             None
         """
+        self.name=name
+        self.hp=hp
+        self.mp=mp
+        self.damage=damage
+        self.strength_growth=strength_growth
+        self.agility_growth=agility_growth
+        self.intelligence_growth=intelligence_growth
+        self.level=0
+
     
     def __str__(self):
         """
@@ -96,9 +103,13 @@ class Hero():
             str: A string that describes this instance of <Hero>
 
         """
-
+        if(self.mp>0):
+            description = str(self.name) +", level "+str(self.level)+", hp "+str(float(self.hp))+", mp "+str(float(self.mp))+", damage "+str(float(self.damage))
+        else:
+            description = str(self.name) +", level "+str(self.level)+", hp "+str(float(self.hp))+", mp "+str(int(self.mp))+", damage "+str(float(self.damage))
+        return description
     
-    def attack(self):
+    def attack(self,other):
         """
         TO DO:
         This method allows current hero to attack the other hero.
@@ -110,6 +121,7 @@ class Hero():
         Returns:
             None
         """
+        other.hp=other.hp-self.damage
 
     def is_dead(self):
         """
@@ -123,12 +135,17 @@ class Hero():
         Returns:
             dead (bool): True if the hero is dead. False if the hero is alive
         """
+        dead=False
+        if self.hp<=0:
+            dead=True
+        return dead
+
 
     
 
 # Second, let's create the child classes for different types of heroes
 class StrengthHero(Hero):
-    def __init__(self):
+    def __init__(self,name,hp,mp,damage,strength_growth,agility_growth,intelligence_growth,main_attribute="strength"):
         """
         TO DO:
         The constructor of the <StrengthHero> class.
@@ -148,7 +165,8 @@ class StrengthHero(Hero):
         Returns:
             None
         """
-
+        super().__init__(name,hp,mp,damage,strength_growth,agility_growth,intelligence_growth)
+        self.main_attribute="strength"
     
     def level_up(self):
         """
@@ -166,6 +184,10 @@ class StrengthHero(Hero):
         Returns:
             None
         """
+        self.level=self.level+1
+        self.hp=self.hp+20*self.strength_growth
+        self.mp=self.mp+5*self.intelligence_growth
+        self.damage=self.damage+self.strength_growth
     
     def ability(self):
         """
@@ -181,9 +203,15 @@ class StrengthHero(Hero):
         Returns:
             None
         """
+        if self.mp>=200:
+            self.hp=2*self.hp
+            self.mp=self.mp-200
+            print(self.name+" now has "+str(self.hp)+" hp")
+        else:
+            print(self.name+" doesn't have enough mp")
 
 class AgilityHero(Hero):
-    def __init__(self):
+    def __init__(self,name,hp,mp,damage,strength_growth,agility_growth,intelligence_growth,main_attribute="agility"):
         """
         TO DO:
         The constructor of the <StrengthHero> class.
@@ -203,6 +231,8 @@ class AgilityHero(Hero):
         Returns:
             None
         """
+        super().__init__(name,hp,mp,damage,strength_growth,agility_growth,intelligence_growth)
+        self.main_attribute="agility"
     
     def level_up(self):
         """
@@ -220,6 +250,10 @@ class AgilityHero(Hero):
         Returns:
             None
         """
+        self.level=self.level+1
+        self.hp=self.hp+10*self.strength_growth
+        self.mp=self.mp+10*self.intelligence_growth
+        self.damage=self.damage+self.agility_growth
     
     def ability(self):
         """
@@ -235,9 +269,15 @@ class AgilityHero(Hero):
         Returns:
             None
         """
+        if self.mp>=300:
+            self.damage=2*self.damage
+            self.mp=self.mp-300
+            print(self.name+" now has "+str(self.damage)+" damage")
+        else:
+            print(self.name+" doesn't have enough mp")
 
 class IntelligenceHero(Hero):
-    def __init__(self):
+    def __init__(self,name,hp,mp,damage,strength_growth,agility_growth,intelligence_growth,main_attribute="intelligence"):
         """
         TO DO:
         The constructor of the <StrengthHero> class.
@@ -257,6 +297,8 @@ class IntelligenceHero(Hero):
         Returns:
             None
         """
+        super().__init__(name,hp,mp,damage,strength_growth,agility_growth,intelligence_growth)
+        self.main_attribute="intelligence"
     
     def level_up(self):
         """
@@ -274,7 +316,11 @@ class IntelligenceHero(Hero):
         Returns:
             None
         """
-    
+        self.level=self.level+1
+        self.hp=self.hp+5*self.strength_growth
+        self.mp=self.mp+20*self.intelligence_growth
+        self.damage=self.damage+self.intelligence_growth
+
     def ability(self):
         """
         TO DO:
@@ -288,6 +334,10 @@ class IntelligenceHero(Hero):
         Returns:
             None
         """
+        self.hp=self.hp+0.5*self.mp
+        self.damage=self.damage+0.5*self.mp
+        self.mp=0
+        print(self.name+" now has "+ str(self.hp)+" and "+str(self.damage)+" damage")
 
 # Now let's simulate the game
 def main(heroes):
@@ -311,8 +361,32 @@ def main(heroes):
     # If a hero's main attribute is "intelligence", it should be an instance of IntelligenceHero
     # Then add the key-value pair <name> : hero instance into a new dictionary <all_heroes>
     all_heroes = {}
+    for row in heroes:
+        if row["main_attribute"]=="strength":
+            obj=StrengthHero(row["name"],row["base_hp"],row["base_mp"],row["base_damage"],row["strength_growth_per_level"],row["agility_growth_per_level"],row["intelligence_growth_per_level"],row["main_attribute"])
 
-    
+        elif row["main_attribute"]=="agility":
+            obj=AgilityHero(row["name"],row["base_hp"],row["base_mp"],row["base_damage"],row["strength_growth_per_level"],row["agility_growth_per_level"],row["intelligence_growth_per_level"],row["main_attribute"])
+        elif row["main_attribute"]=="intelligence":
+            obj=IntelligenceHero(row["name"],row["base_hp"],row["base_mp"],row["base_damage"],row["strength_growth_per_level"],row["agility_growth_per_level"],row["intelligence_growth_per_level"],row["main_attribute"])
+        newobj={row["name"]:obj}
+        all_heroes.update(newobj)
+    #print(all_heroes)
+    #{
+     #   "name": "Axe",
+     #   "main_attribute": "strength",
+      #  "base_hp": 625,
+      #  "base_mp": 234,
+      #  "base_damage": 52,
+      #  "strength_growth_per_level": 3.6,
+      #  "agility_growth_per_level": 2.2,
+      #  "intelligence_growth_per_level": 1.6
+    #},
+    for key,value in all_heroes.items():
+        for i in range(25):
+            value.level_up()
+            
+        
 
     # TO DO:
     # Level up your heroes
@@ -324,8 +398,8 @@ def main(heroes):
     
     # Print the information of your heroes
     # Uncomment the for loop below when you finish those TO DOs above
-    # for v in all_heroes.values():
-        # print(v)
+    for v in all_heroes.values():
+         print(v)
     # Your output of print should be the same as below
     # Axe, level 25, hp 2425.0, mp 434.0, damage 141.9999999999999
     # Monkey King, level 25, hp 1211.0, mp 710.0, damage 143.5
@@ -341,8 +415,16 @@ def main(heroes):
     # Below are the steps you can simulate the fight
     # Step 1: Loop over all of the key/value pairs in all_heroes. 
     # Recall that the key is the hero name and the value is the class instance representing that hero. 
+
     # This loop will determine whose turn it is to act in the fight!
     # Step 2: Have the hero use their ability. 
+    for key,value in all_heroes.items():
+        value.ability()
+        for key1,value1 in all_heroes.items():
+            if key1==key:
+                pass
+            else:
+                value.attack(value1)
     # Remember that the ability is a method of the class instance. 
     # Your code for this should look something like this: .ability()
     # Step 3: Inside for loop, make another loop through the key/value pairs of all_heroes, 
@@ -360,25 +442,14 @@ def main(heroes):
     # Loop over <all_heroes> and use the method <is_dead> to check whether the hero is dead or not.
     # If the hero is not dead, add it into the list <winners>
     winners = []
-
+    for key,value in all_heroes.items():
+        if value.is_dead()==False:
+            winners.append(value)
+    
+    
+   
     
     return winners
-
-
-# Now let's do a recap of this Problem Set
-# Why we need class <Hero>?
-# Those heroes have the same attributes and same basic methods, like <attack>
-# Why we need class <StrengthHero>, <AgilityHero>, <IntelligenceHero>
-# Different heroes have different ways of leveling up and different abilities
-# We actually implemented three versions of <ability> and <level_up>
-
-# That's the power of inheritance and overriding 
-# We use a parent class to manage those common attributes and methods
-# We use child classes to manage those distinct methods and methods with the same name but act in different ways
-
-# I have simplified the simulation for you
-# In real world game, there are a lot more attributes, methods to manage
-# That's why we need OOP to better organize our code
 
 
 if __name__ == '__main__':

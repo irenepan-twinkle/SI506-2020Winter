@@ -25,7 +25,7 @@ class Dog:
 # Below is the __init__ function. You will initialize the class with <name> and an
 # empty list called <tricks>. Add <name> and <age> as your function parameter and initialize <name>
 # with <name> and <age> with <age>. Also initialize <tricks> as an empty list.
-    def __init__(self):
+    def __init__(self,name,age):
         '''
         This function initialises the class with three variables: <name>, <age> and <tricks>.
         <name> is updated using the passed positional argument <name> and <age> is updated with
@@ -38,7 +38,9 @@ class Dog:
         returns:
             none 
         '''
-        pass
+        self.name=name
+        self.age=age
+        self.tricks=[]
 
 # END PROBLEM 1 SOLUTION
 
@@ -60,7 +62,7 @@ class Dog:
         returns:
             none
         '''
-        pass
+        self.age=self.age+1
 
 # PROBLEM 3 (5 Points)
 # In this problem you will 
@@ -72,7 +74,7 @@ class Dog:
 # Create a function called <update_tricks> that takes in positional argument <trick>
 # and appends the value to the <tricks> list.
 
-    def update_tricks(self):
+    def update_tricks(self,trick):
         '''
         This function updates the <tricks> list with the value provided from the
         <trick> argument. Append <trick> to <tricks>.
@@ -83,7 +85,7 @@ class Dog:
         returns:
             none
         '''
-        pass
+        self.tricks.append(trick)
 # END PROBLEM 3 SOLUTION
 
 # PROBLEM 4 (2.5 Points)
@@ -103,7 +105,8 @@ class Dog:
                 string: the string representation of the object. This should 
                 return the following string "Dog(name = <name>, age = <age>, tricks = <tricks>)"
             '''
-            pass
+            result="Dog(name = "+str(self.name)+", age = "+str(self.age)+", tricks = "+str(self.tricks)+")"
+            return result
 
 
 # END PROBLEM 4 SOLUTION
@@ -121,15 +124,16 @@ class Dog:
 # set "3" to a variable named <age>. Do not set it as a string.
 
 # Instantiate a Dog object with <name> and <age> and assign it to a variable named <dog>.
+dog=Dog("Fido",3)
 
 # Call <incerement_age>.
-
+dog.increment_age()
 # Call <update_tricks> and pass "sit" as a keyword argument.
-
+dog.update_tricks("sit")
 # call the object representation using <__str__> method and save it to variable <string>.
-
+string=dog.__str__()
 #print <string>
-
+print(string)
 
 # END PROBLEM 5 SOLUTION
 

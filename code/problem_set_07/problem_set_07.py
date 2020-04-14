@@ -38,8 +38,13 @@ def write_to_file(filepath, data_to_write):
     Returns:
         None, but a file is produced.
     """
+    result=str(data_to_write)
+    newfile=open(filepath,"w")
+    n=newfile.write(result)
+    newfile.close()
 
-    pass
+
+    return 0
 
 
 class SuperHeroine(object):
@@ -77,6 +82,14 @@ class SuperHeroine(object):
         Returns:
             None
         """
+        self.name=name
+        self.full_name=full_name
+        self.team=team
+        self.eye_color=eye_color
+        self.hair_color=hair_color
+        self.base=base
+        self.powers=[]
+        self.nemeses=[]
 
         pass
 
@@ -102,7 +115,7 @@ class SuperHeroine(object):
         are not often accompanied by a docstring, because they have a very clear function.
         """
 
-        description = f"<name> is a member of the <team>, and has the following powers:\n<powers>"
+        description = str(self.name) +" is a member of the "+str(self.team)+", and has the following powers:\n"+str(self.powers)
         return description
 
 
@@ -118,6 +131,7 @@ class SuperHeroine(object):
         Returns:
             None
         """
+        self.powers.append(power)
 
         pass
 
@@ -134,6 +148,7 @@ class SuperHeroine(object):
         Returns:
             None
         """
+        self.nemeses.append(nemesis)
 
         pass
 
@@ -208,6 +223,9 @@ def main():
     # Read in the "sh_basic_info.csv" file using your <read_csv_file> function. Save the
     # returned list to <basic_info>. Each item in <basic_info> should be a dictionary
     # describing one of the heroines in the data set.
+
+
+    basic_info=read_csv_file("sh_basic_info.csv")
     pass
 
     # TO DO:
@@ -226,16 +244,23 @@ def main():
     #        'Scarlet Witch': <__main__.SuperHeroine object at 0x100b6d240>,
     #        'Jessica Jones': <__main__.SuperHeroine object at 0x100b6d208>
     #       }
-    pass
+    heroines={}
+    for row in basic_info:
+        obj=SuperHeroine(row['name'],row['full_name'],row['team'],row['eye_color'],row['hair_color'],row['base'])
+        newobj={row['name']:obj}
+        heroines.update(newobj)
+
+    print(heroines)
 
     # TO DO:
     # Read the "sh_additional_info.csv" file using your <read_csv_file>. Save the
     # returned list to the variable <additional_info>
-    pass
+    additional_info=read_csv_file("sh_additional_info.csv"
+    )
 
     # TO DO:
     # Loop through the lines from 'sh_additional_info.csv' (which are now stored in
-    # <additional_info>) and do the following:
+    # <additional_info>) and do the following:ty
     #
     # 1. Save the value associated with the "Heroine Name" key from each row of <additional_info>
     #       to a new variable.
@@ -247,7 +272,19 @@ def main():
     #       is 'power' or 'nemesis'.
     # 5. Call the proper method (either <add_power> or <add_nemesis>) on the <instance_affected>
     #       variable.
-    pass
+    for row in additional_info:
+        newname=row['Heroine Name']
+        
+        for key,value in heroines.items():
+            if key==newname:
+                instance_affected=value
+        newca=row["Category"]
+        newvalue=row["Value"]
+        if newca=="power":
+            instance_affected.add_power(newvalue)
+        elif newca=="nemesis":
+            instance_affected.add_nemesis(newvalue)
+
 
     # TO DO:
     # Call your <write_to_file> function three times:
@@ -255,6 +292,9 @@ def main():
     # First: create a file called "storm.txt" that writes the <storm> instance.
     # Second: create a file called "scarlet_witch.txt" that writes the <scarlet_witch> instance.
     # Finally: create a file called "jessica_jones.txt" that writes the <jessica_jones> instance.
+    write_to_file("storm.txt",heroines['Storm'])
+    write_to_file("scarlet_witch.txt",heroines['Scarlet Witch'])
+    write_to_file("jessica_jones.txt",heroines['Jessica Jones'])
     pass
 
 

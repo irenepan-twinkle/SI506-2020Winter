@@ -1,0 +1,2 @@
+Jessica Jones is a member of the Defenders, and has the following powers:
+['durability', 'flight', 'super strength', 'super speed', 'telepathy resistance']
