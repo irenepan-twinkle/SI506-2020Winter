@@ -5,11 +5,13 @@ import requests, json
 # to SWAPI API.  If a problem has a set-up, do NOT modify, delete, or ignore
 # the set-up code.
 
-ENDPOINT = "https://swapi.co/api"
-PERSON_PROPERTIES = ('''
+ENDPOINT = 'https://swapi.py4e.com/api'
+
+PERSON_PROPERTIES = (
 "name", "height", "mass", "hair_color", "skin_color",
- "eye_color", "birth_year", "gender", "homeworld", "films", "species", "starships", "url"
- ''')
+ "eye_color", "birth_year", "gender", "homeworld", "films",
+ "species", "starships", "url"
+)
 
 # PROBLEM 1 (5 POINTS)
 # In this problem you will demonstrate your understanding of the requests module by
@@ -30,11 +32,11 @@ def get_people(url, params=None):
         people (list): a list of dictionaries, each of which describes a person
 
     HINT: requests.get(url, params).json() returns a JSON Object that contains
-    a "results" list properyty that contains a maximum of 10 records per request.
+    a "results" list property that contains a maximum of 10 records per request.
     Use the "results"key to index the dictionary representation of the
     decoded JSON to access the resource(s) matched by the search query return.
-
     """
+
     pass
 
 # PROBLEM 2 (5 points)
@@ -44,18 +46,17 @@ def get_people(url, params=None):
 # 3) working with for loops
 
 def filter_properties(person, PERSON_PROPERTIES):
-   """
-    Extract specific properties of the given person into a new dictionary.
+    """Extract specific properties of the given person into a new dictionary.
 
     Parameters:
         person (dict): the dictionary containing properties of a person.
-        PERSON_PROPERTIES (tupl): a tuple containing the charachteristics of a person
+        PERSON_PROPERTIES (tupl): a tuple containing the characteristics of a person
 
     Returns:
         record (dict): a dictionary containing filtered key-value pairs
         of characteristics of the person.
-
     """
+
     pass
 
 
@@ -63,7 +64,7 @@ def filter_properties(person, PERSON_PROPERTIES):
 # In this problem, you will demonstrate your understanding of writing a JSON file.
 
 def write_json(filepath, data):
-   """Given a valid filepath writes data to a JSON file.
+    """Given a valid filepath writes data to a JSON file.
     Parameters:
         filepath (str): the path to the file.
         data (dict): the data to be encoded as JSON and written to the file.
@@ -73,13 +74,14 @@ def write_json(filepath, data):
     HINT: for the open parameters, use encoding= 'utf-8' and for the
     json.dump parameters, use ensure_ascii= False, indent=2.
     """
+
     pass
 
 # PROBLEM 4 (5 POINTS)
 
 def main():
-    '''
-    This function executes the following code:
+    """This function executes the following code:
+
     1. Uiltizes <get_people> function to make request to URL to get list of dictionaries
      representing people called <people>. Use the search parameter to only return people
      that have "Skywalker" in their name.
@@ -94,7 +96,8 @@ def main():
     Returns: None
 
     HINT: Review SWAPI documentation on how to make a call to people section.
-    '''
+    """
+
     pass
 
 if __name__ == '__main__':
