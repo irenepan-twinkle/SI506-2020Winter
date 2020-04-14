@@ -323,7 +323,7 @@ the following transport craft:
 
 | method | implement | add Docstring | notes |
 | :----- | :-------- | :------------ | :---- |
-| `__init__(self, url, name)` | Yes | No | |
+| `__init__(self, url, name, model, starship_class)` | Yes | No | |
 | `assign_crew(self, crew)` | Yes | No | Each `crew` key defines a role (e.g., `pilot`, `co-pilot`,
 `astromech_droid`) while the associated value is an instance of a Person (e.g., Luke Skywalker). |
 | `assign_passengers(self, manifest)` | Yes | List of Person instances assigned to the starship's passenger manifest. | |
